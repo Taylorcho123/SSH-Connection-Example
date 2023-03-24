@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SSH Connection</title>
+  <script>
+    async function connectSSH() {
+      const command = document.getElementById('command').value;
+      const result = document.getElementById('result');
+      result.innerHTML = 'Connecting...';
+
+      try {
+        const response = await fetch('/connect-ssh', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: `command=${encodeURIComponent(command)}`
+        });
+        const data = await response.text();
+        result.innerHTML = data;
+      } catch (error) {
+        result.innerHTML = 'Error: ' + error.message;
+      }
+    }
+  </script>
+</head>
+<body>
+  <h1>SSH Connection Example</h1>
+  <label for="command">Command:</label>
+  <input type="text" id="command" name="command">
+  <button onclick="connectSSH()">Connect and Execute Command</button>
+  <div id="result"></div>
+</body>
+</html>
